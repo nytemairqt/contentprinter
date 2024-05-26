@@ -68,6 +68,10 @@ def create_video(num_clips, filename):
 		if seed not in clipSeeds:
 			clipSeeds.append(seed)
 			clip = VideoFileClip(f'{INPUT}{input_videos[seed]}')
+			# Random reverse X 
+			reverse = random.randint(0, 1)
+			if reverse:
+				clip = clip.fx(vfx.mirror_x)
 			clips.append(clip)	
 
 	# Get Audio
