@@ -1,6 +1,7 @@
 from moviepy.editor import * 
 import random 
 import os 
+from tqdm import tqdm
 
 INPUT = 'musicVideos/'
 OUTPUT = 'output/'
@@ -51,7 +52,7 @@ def create_music_video(audio_clip, track_title):
 
 
 
-	text = f"here's my song: '{track_title[:-4]}'"
+	text = f"here's my song: '{track_title[:-6]}'"
 	band1 = random.randint(0, len(FFO)-1)
 	band2 = random.randint(0, len(FFO)-1)
 	while band2 == band1:
@@ -93,7 +94,7 @@ if __name__ == '__main__':
 	NUM_VIDEOS = int(len(audio_files)) # For every music clip
 
 	# Main Loop
-	for i in range(NUM_VIDEOS):
+	for i in tqdm(range(NUM_VIDEOS)):
 		audio_clip = AudioFileClip(f'{AUDIO}{audio_files[i]}')
 		track_title = f'{audio_files[i][:-4]}.mp4' # Truncate Previous File Extension
 
