@@ -8,6 +8,7 @@ AUDIO = 'musicAudio/'
 FONT = 'Bahnschrift'
 FONT_COLOR = 'black'
 BG_COLOR = 'white'
+FFO = ['Bad Omens', 'BMTH', 'Sleep Token', 'Tool', 'Deftones', 'Spiritbox']
 
 def create_music_video(audio_clip, track_title):
 	clipSeeds = []
@@ -48,13 +49,29 @@ def create_music_video(audio_clip, track_title):
 	print(f'track length: {track_length}')
 	print(f'final video length: {video_length}')
 
-	# Composite Caption
-	#for i in range(len(clips)):
-	#	comp = CompositeVideoClip([clips[i], textClips[i]])
-	#	comps.append(comp)
 
+
+	text = f"here's my song: '{track_title[:-4]}'"
+	band1 = random.randint(0, len(FFO)-1)
+	band2 = random.randint(0, len(FFO)-1)
+	while band2 == band1:
+		band2 = random.randint(0, len(FFO)-1)
+	band3 = random.randint(0, len(FFO)-1)
+	while band3 == band1 or band3 == band2:
+		band3 = random.randint(0, len(FFO)-1) 
+
+	ffo = f'FFO: {FFO[band1]}, {FFO[band2]}, {FFO[band3]}'
+	stream = f'full song on my channel'
+
+	# Composite Caption
+	text_duration = 4
+	text_clip1 = TextClip(f'{text}', font=FONT, fontsize=70, color=FONT_COLOR, bg_color=BG_COLOR, method='caption', size=(600, None)).set_duration(text_duration).set_pos('center')
+	text_clip2 = TextClip(f'{ffo}', font=FONT, fontsize=70, color=FONT_COLOR, bg_color=BG_COLOR, method='caption', size=(600, None)).set_duration(text_duration).set_pos('center')
+	text_clip3 = TextClip(f'{stream}', font=FONT, fontsize=70, color=FONT_COLOR, bg_color=BG_COLOR, method='caption', size=(600, None)).set_duration(text_duration).set_pos('center')
+	final_text = concatenate_videoclips([text_clip1, text_clip2, text_clip3]).set_pos('center')
 
 	conc = concatenate_videoclips(clips)
+	conc = CompositeVideoClip([conc, final_text])
 	conc = conc.set_audio(audio_clip) # Doesn't write in place for some reason
 	conc.write_videofile(f'{OUTPUT}{track_title}')
 
